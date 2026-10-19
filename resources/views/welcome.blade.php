@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaniHarga - Informasi Harga Pertanian</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --green: #198754;
+            --dark-green: #125c39;
+            --light-green: #eaf6ee;
+            --text-dark: #24352c;
+        }
+
+        body {
+            background: #f7f9f7;
+            color: var(--text-dark);
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: #fff;
+        }
+
+        .brand-icon {
+            background: var(--light-green);
+            color: var(--green);
+            padding: 9px 12px;
+            border-radius: 12px;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #125c39, #198754);
+            color: white;
+            padding: 64px 0;
+            border-radius: 0 0 28px 28px;
+        }
+
+        .hero .form-control,
+        .hero .form-select {
+            min-height: 48px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border: 1px solid #e7eee8;
+            border-radius: 18px;
+            height: 100%;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--light-green);
+            color: var(--green);
+            font-size: 21px;
+        }
+
+        .content-card {
+            background: white;
+            border: 1px solid #e7eee8;
+            border-radius: 18px;
+            padding: 24px;
+            height: 100%;
+        }
+
+        .table thead th {
+            color: #66756b;
+            font-size: 13px;
+            font-weight: 600;
+            background: #f7faf7;
+            padding: 15px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 17px 15px;
+            vertical-align: middle;
+        }
+
+        .commodity-icon {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: var(--light-green);
+        }
+
+        .price {
+            font-weight: 700;
+            color: #24352c;
+        }
+
+        .footer {
+            background: #123d2a;
+            color: #e4eee7;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 42px 0;
+            }
+
+            .content-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg border-bottom sticky-top">
+    <div class="container py-2">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2"
+           href="{{ url('/') }}">
+            <span class="brand-icon">
+                <i class="bi bi-flower1"></i>
+            </span>
+            <span>Tani<span class="text-success">Harga</span></span>
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#beranda">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#harga">Harga Komoditas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tren">Tren Harga</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success px-4 mt-2 mt-lg-0"
+                       href="#harga">Lihat Harga</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="hero" id="beranda">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="badge bg-light text-success mb-3 px-3 py-2">
+                    <i class="bi bi-bar-chart-line me-1"></i>
+                    Informasi Pasar Pertanian
+                </span>
+
+                <h1 class="display-5 fw-bold mb-3">
+                    Pantau Harga Pangan,<br>
+                    Ambil Keputusan Lebih Baik.
+                </h1>
+
+                <p class="lead mb-4 text-white-50">
+                    Temukan informasi harga komoditas pertanian,
+                    bandingkan harga antar pasar, dan pelajari
+                    pergerakan harga dengan lebih mudah.
+                </p>
+
+                <form action="#harga" method="GET"
+                      class="row g-2 bg-white rounded-3 p-2">
+                    <div class="col-md">
+                        <input type="search" name="q"
+                               class="form-control border-0"
+                               placeholder="Cari cabai, beras, bawang...">
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-success w-100 px-4"
+                                type="submit">
+                            <i class="bi bi-search me-1"></i> Cari Harga
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-5 text-center">
+                <div class="p-4">
+                    <i class="bi bi-flower2"
+                       style="font-size: 150px; opacity: .9;"></i>
+                    <p class="mb-0 text-white-50">
+                        Data pasar untuk pertanian yang lebih informatif
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container py-5">
+
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-3">
+            <div>
+                <p class="text-success fw-semibold mb-1">RINGKASAN DATA</p>
+                <h2 class="section-title h3 mb-0">Informasi Pasar</h2>
+            </div>
+            <span class="text-secondary small">
+                <i class="bi bi-clock me-1"></i>Data demonstrasi
+            </span>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <p class="text-secondary mb-2">Jenis Komoditas</p>
+                            <h3 class="fw-bold mb-0">5</h3>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-basket2"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">
+                        Contoh komoditas pertanian
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <p class="text-secondary mb-2">Lokasi Pasar</p>
+                            <h3 class="fw-bold mb-0">3</h3>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">
+                        Contoh lokasi pemantauan
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <p class="text-secondary mb-2">Catatan Harga</p>
+                            <h3 class="fw-bold mb-0">15</h3>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-clipboard-data"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">
+                        Data simulasi untuk demonstrasi
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5" id="tren">
+        <div class="mb-3">
+            <p class="text-success fw-semibold mb-1">ANALISIS PASAR</p>
+            <h2 class="section-title h3">Tren Harga Komoditas</h2>
+            <p class="text-secondary">
+                Contoh pergerakan harga cabai merah selama satu minggu.
+            </p>
+        </div>
+
+        <div class="content-card">
+            <div class="d-flex flex-wrap justify-content-between gap-2 mb-4">
+                <div>
+                    <h3 class="h6 fw-bold mb-1">Cabai Merah</h3>
+                    <p class="text-secondary small mb-0">
+                        Harga dalam rupiah per kilogram
+                    </p>
+                </div>
+                <span class="badge bg-warning-subtle text-dark align-self-start">
+                    Data simulasi
+                </span>
+            </div>
+            <div style="height: 300px; position: relative;">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="harga">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+            <div>
+                <p class="text-success fw-semibold mb-1">DAFTAR KOMODITAS</p>
+                <h2 class="section-title h3 mb-1">Harga Pasar Pertanian</h2>
+                <p class="text-secondary mb-0">
+                    Contoh data harga untuk demonstrasi tampilan.
+                </p>
+            </div>
+
+            <select id="marketFilter"
+                    class="form-select"
+                    style="max-width: 220px;">
+                <option value="">Semua Pasar</option>
+                <option value="Pasar Keputran">Pasar Keputran</option>
+                <option value="Pasar Pucang">Pasar Pucang</option>
+                <option value="Pasar Wonokromo">Pasar Wonokromo</option>
+            </select>
+        </div>
+
+        <div class="content-card p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Komoditas</th>
+                            <th>Lokasi Pasar</th>
+                            <th>Harga per Kg</th>
+                            <th>Tanggal</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceTable">
+                        <tr data-market="Pasar Keputran">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="commodity-icon"
+                                         src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=100&h=100&fit=crop"
+                                         alt="Cabai merah">
+                                    <span class="fw-semibold">Cabai Merah</span>
+                                </div>
+                            </td>
+                            <td>Pasar Keputran</td>
+                            <td class="price">Rp35.000</td>
+                            <td>12 Okt 2026</td>
+                            <td><span class="badge bg-light text-secondary">Simulasi</span></td>
+                        </tr>
+
+                        <tr data-market="Pasar Pucang">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="commodity-icon"
+                                         src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=100&h=100&fit=crop"
+                                         alt="Bawang merah">
+                                    <span class="fw-semibold">Bawang Merah</span>
+                                </div>
+                            </td>
+                            <td>Pasar Pucang</td>
+                            <td class="price">Rp32.000</td>
+                            <td>12 Okt 2026</td>
+                            <td><span class="badge bg-light text-secondary">Simulasi</span></td>
+                        </tr>
+
+                        <tr data-market="Pasar Wonokromo">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="commodity-icon"
+                                         src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=100&h=100&fit=crop"
+                                         alt="Beras">
+                                    <span class="fw-semibold">Beras</span>
+                                </div>
+                            </td>
+                            <td>Pasar Wonokromo</td>
+                            <td class="price">Rp14.000</td>
+                            <td>12 Okt 2026</td>
+                            <td><span class="badge bg-light text-secondary">Simulasi</span></td>
+                        </tr>
+
+                        <tr data-market="Pasar Keputran">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="commodity-icon"
+                                         src="https://images.unsplash.com/photo-1546470427-e5a89cd7b8a1?w=100&h=100&fit=crop"
+                                         alt="Tomat">
+                                    <span class="fw-semibold">Tomat</span>
+                                </div>
+                            </td>
+                            <td>Pasar Keputran</td>
+                            <td class="price">Rp12.000</td>
+                            <td>12 Okt 2026</td>
+                            <td><span class="badge bg-light text-secondary">Simulasi</span></td>
+                        </tr>
+
+                        <tr data-market="Pasar Pucang">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="commodity-icon"
+                                         src="https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=100&h=100&fit=crop"
+                                         alt="Sayuran">
+                                    <span class="fw-semibold">Kentang</span>
+                                </div>
+                            </td>
+                            <td>Pasar Pucang</td>
+                            <td class="price">Rp16.000</td>
+                            <td>12 Okt 2026</td>
+                            <td><span class="badge bg-light text-secondary">Simulasi</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-3 py-3 border-top">
+                <small class="text-secondary">
+                    Harga di atas merupakan data simulasi, bukan harga pasar aktual.
+                </small>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer mt-5 py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+        <div>
+            <h5 class="fw-bold">TaniHarga</h5>
+            <p class="small mb-0">
+                Sistem Informasi Harga Komoditas Pertanian.
+            </p>
+        </div>
+        <p class="small mb-0 align-self-md-end">
+            &copy; 2026 TaniHarga. Proyek Sistem Informasi Agribisnis.
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('priceChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                '6 Okt', '7 Okt', '8 Okt', '9 Okt',
+                '10 Okt', '11 Okt', '12 Okt'
+            ],
+            datasets: [{
+                label: 'Harga cabai merah',
+                data: [32000, 34000, 33000, 36000, 35000, 37000, 35000],
+                borderColor: '#198754',
+                backgroundColor: 'rgba(25, 135, 84, 0.12)',
+                fill: true,
+                tension: 0.35,
+                borderWidth: 3,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Rp' + context.parsed.y.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp' + Number(value).toLocaleString('id-ID');
+                        }
+                    },
+                    grid: { color: '#edf1ed' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    document.getElementById('marketFilter').addEventListener('change', function() {
+        const selectedMarket = this.value;
+        const rows = document.querySelectorAll('#priceTable tr');
+
+        rows.forEach(function(row) {
+            row.style.display =
+                !selectedMarket || row.dataset.market === selectedMarket
+                    ? ''
+                    : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
